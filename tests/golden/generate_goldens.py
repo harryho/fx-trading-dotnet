@@ -50,7 +50,6 @@ def make_inputs():
         "volume": volume,
     }
 
-
 def run(function, params, outputs, arrays):
     """Call talib, return (begIdx, {name: values-from-begIdx})."""
     if not isinstance(arrays, tuple):
@@ -73,6 +72,29 @@ def c(close, high, low, volume):
         "low": np.array(low, dtype=float),
         "volume": np.array(volume, dtype=float),
     }
+
+
+def fxpa_cases(a):
+    """Goldens for FXPA's own indicator wrappers.
+
+    These use the application's default parameters and its own notion of
+    "average" price (BarData.Average = (Open+Low+High+Close)/4, and the
+    test series has Open == Close), so the wrappers can be compared with
+    the canonical TA-Lib reference.
+    """
+    average = (2.0 * a["close"] + a["high"] + a["low"]) / 4.0
+    return [
+        ("ATR", {"optInTimePeriod": 14}, ["outReal"], talib.ATR(a["high"], a["low"], a["close"], 14)),
+        ("EMA", {"optInTimePeriod": 17}, ["outReal"], talib.EMA(a["close"], 17)),
+        ("MACD", {"optInFastPeriod": 12, "optInSlowPeriod": 26, "optInSignalPeriod": 9},
+         ["outMacd", "outSignal", "outHist"], talib.MACD(average, 12, 26, 9)),
+        ("MFI", {"optInTimePeriod": 14}, ["outReal"],
+         talib.MFI(a["high"], a["low"], a["close"], a["volume"], 14)),
+        ("STO", {"optInFastKPeriod": 8, "optInSlowKPeriod": 5, "optInSlowDPeriod": 3,
+                 "optInSlowKMAType": 1, "optInSlowDMAType": 1},
+         ["outSlowK", "outSlowD"],
+         talib.STOCH(a["high"], a["low"], a["close"], 8, 5, 1, 3, 1)),
+    ]
 
 
 def main():
@@ -121,6 +143,24 @@ def main():
             json.dump(doc, f, indent=1)
         n_out = sum(len(v) for v in results.values())
         print(f"{path}: begIdx={beg_idx} outputs={list(results)} values={n_out}")
+
+    # FXPA's own indicator wrappers (default parameters, application semantics).
+    fxpa_dir = os.path.join(OUT, "fxpa")
+    os.makedirs(fxpa_dir, exist_ok=True)
+    for function, params, outputs, arrays in fxpa_cases(a):
+        beg_idx, results = run(function, params, outputs, arrays)
+        doc = {
+            "function": function,
+            "parameters": params,
+            "inputs": {"count": COUNT, "seed": SEED},
+            "outBegIdx": beg_idx,
+            "tolerance": 1e-6,
+            "outputs": results,
+        }
+        path = os.path.join(fxpa_dir, f"{function}.json")
+        with open(path, "w") as f:
+            json.dump(doc, f, indent=1)
+        print(f"{path}: begIdx={beg_idx} outputs={list(results)}")
 
 
 if __name__ == "__main__":
