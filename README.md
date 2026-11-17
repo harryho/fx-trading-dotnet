@@ -59,6 +59,18 @@ dotnet publish src\fxpa\fxpa.csproj -c Release -r win-x64 --self-contained
 dotnet test fx-trading-dotnet.sln -c Release
 ```
 
+The solution suite is the primary gate: golden-master tests against the
+canonical C TA-Lib, the application's own indicators, the interval
+aggregation, the chart coordinate mapping, the data pipeline and a set of
+static gates (no new `lock (this)`, no new console writes, deterministic
+assembly versions). Two further suites live outside the solution on purpose
+so they can never slow it down or hang it:
+
+| Path | Runs via | What it does |
+|---|---|---|
+| `tests/fxpa.ui/` | `dotnet test tests/fxpa.ui/Fxpa.UiSmoke.csproj -c Release` | Renders the real chart with the bundled data and asserts non-blank pixels. Needs an interactive desktop session. |
+| `tests/fxpa.benchmarks/` | `dotnet run -c Release --project tests/fxpa.benchmarks -- --filter * --job short` | BenchmarkDotNet baselines for the hot paths (see its README for recorded numbers). |
+
 ## Repository layout
 
 | Path | Purpose |
@@ -67,6 +79,7 @@ dotnet test fx-trading-dotnet.sln -c Release
 | `src/fxpa/fxd/` | Bundled historical data used by the simulation provider |
 | `src/lib/` | Pre-built native/legacy dependencies (TA-Lib) |
 | `tests/` | Test projects (characterization + golden-master tests) |
+| `tests/golden/` | Golden fixtures and the generator that produces them |
 | `.github/workflows/` | CI: build, test, publish on Windows runners — manual trigger only |
 
 ## Engineering roadmap

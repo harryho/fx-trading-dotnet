@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    L5 UI smoke-test layer.
+
+    This project is deliberately NOT wired into fx-trading-dotnet.sln (the
+    solution owner decides that). It is self-contained: it can be built and run
+    on its own with
+
+        dotnet test tests/fxpa.ui/Fxpa.UiSmoke.csproj -c Release
+
+    See tests/fxpa.ui/README.md for the rationale, the assertions and the
+    known limitations.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <IsPackable>false</IsPackable>
+    <RootNamespace>fxpa.ui</RootNamespace>
+    <AssemblyName>fxpa.ui</AssemblyName>
+    <!-- The test code is new: hold it to a modern bar, unlike the legacy tree. -->
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\fxpa\fxpa.csproj" />
+    <Reference Include="..\..\src\lib\TA-Lib-Core.dll" />
+  </ItemGroup>
+
+</Project>

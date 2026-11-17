@@ -1,0 +1,66 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    FXPA performance baseline suite (layer 6 of the repo's verification stack).
+
+    This project is intentionally NOT referenced by fx-trading-dotnet.sln:
+    benchmarks are run on demand, never as part of `dotnet test`, so a slow
+    machine can never turn the unit-test run red.
+
+    It targets net10.0-windows because it links against the WinForms
+    application assembly (fxpa), which drags in System.Drawing.Common.
+  -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <AssemblyName>fxpa.benchmarks</AssemblyName>
+    <RootNamespace>fxpa.benchmarks</RootNamespace>
+    <StartupObject>fxpa.benchmarks.Program</StartupObject>
+
+    <!-- Modern bar for new code, matching tests/fxpa.tests. -->
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <IsPackable>false</IsPackable>
+
+    <!-- We ship our own Program.cs (BenchmarkSwitcher), so the package's
+         auto-generated entry point must be switched off. -->
+    <GenerateProgramFile>false</GenerateProgramFile>
+
+    <!-- Benchmarks must not be perturbed by a concurrent GC server heap. -->
+    <ServerGarbageCollection>false</ServerGarbageCollection>
+    <ConcurrentGarbageCollection>false</ConcurrentGarbageCollection>
+    <TieredPGO>true</TieredPGO>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.15.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\fxpa\fxpa.csproj" />
+
+    <!--
+      KNOWN TRAP (do not remove):
+      src/fxpa/fxpa.csproj pulls TA-Lib in with a *file path* <Reference>.
+      File-path references do NOT flow transitively through a ProjectReference,
+      so without this line the build fails with CS0246 on
+      'TicTacTec.TA.Library' as soon as a benchmark touches Core.Rsi/Core.Mfi.
+      tests/fxpa.tests carries the exact same line for the same reason.
+    -->
+    <Reference Include="..\..\src\lib\TA-Lib-Core.dll" />
+  </ItemGroup>
+
+  <!--
+    The bundled GBPUSD fixture is also copied next to the benchmark binaries so
+    the suite can run from the output folder alone. RepoPaths still prefers the
+    canonical file under src/fxpa/fxd when it can find the repository root.
+  -->
+  <ItemGroup>
+    <Content Include="..\..\src\fxpa\fxd\GBPUSD\MIN1\local\GBPUSD.cdl"
+             CopyToOutputDirectory="PreserveNewest"
+             LinkBase="fxd\GBPUSD\MIN1\local\" />
+  </ItemGroup>
+
+</Project>
