@@ -59,6 +59,20 @@ dotnet publish src\fxpa\fxpa.csproj -c Release -r win-x64 --self-contained
 dotnet test fx-trading-dotnet.sln -c Release
 ```
 
+The suite is fast (~0.3 s) because coverage collection is opt-in. To
+measure code coverage:
+
+```powershell
+dotnet test fx-trading-dotnet.sln -c Release --collect "XPlat Code Coverage"
+dotnet tool install -g dotnet-reportgenerator-globaltool   # once, for HTML
+reportgenerator -reports:"tests/fxpa.tests/TestResults/**/coverage.cobertura.xml" -targetdir:coveragereport
+```
+
+Then open `coveragereport/index.html`. The raw Cobertura XML lands in
+`tests/fxpa.tests/TestResults/<guid>/coverage.cobertura.xml`. Recorded
+baseline (2026-11-17): 8.9 % line coverage overall, 9.6 % on the non-UI
+core — see the commit history for the ratchet.
+
 The solution suite is the primary gate: golden-master tests against the
 canonical C TA-Lib, the application's own indicators, the interval
 aggregation, the chart coordinate mapping, the data pipeline and a set of

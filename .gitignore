@@ -36,3 +36,6 @@ Desktop.ini
 
 # BenchmarkDotNet run artifacts
 BenchmarkDotNet.Artifacts/
+
+# Coverage report output
+coveragereport/
