@@ -63,15 +63,26 @@ The suite is fast (~0.3 s) because coverage collection is opt-in. To
 measure code coverage:
 
 ```powershell
-dotnet test fx-trading-dotnet.sln -c Release --collect "XPlat Code Coverage"
+dotnet test fx-trading-dotnet.sln -c Release -s coverlet.runsettings
 dotnet tool install -g dotnet-reportgenerator-globaltool   # once, for HTML
 reportgenerator -reports:"tests/fxpa.tests/TestResults/**/coverage.cobertura.xml" -targetdir:coveragereport
 ```
 
 Then open `coveragereport/index.html`. The raw Cobertura XML lands in
-`tests/fxpa.tests/TestResults/<guid>/coverage.cobertura.xml`. Recorded
-baseline (2026-11-17): 8.9 % line coverage overall, 9.6 % on the non-UI
-core — see the commit history for the ratchet.
+`tests/fxpa.tests/TestResults/<guid>/coverage.cobertura.xml`.
+
+`coverlet.runsettings` scopes the measurement to the application's own
+code: the WinForms designer output, the settings/resource designers and
+the vendored third-party components (QuickenToolStrip, TitleStrip,
+HeaderRenderer, DOATransparentLabel, ManagedTreeView, DSWebClient,
+ThreadPoolEx) are excluded, and each exclusion carries its reason in the
+file. The .NET framework and the NuGet packages are never instrumented by
+coverlet in the first place.
+
+Recorded baseline (2026-11-17, 65 tests): **9.52 %** line coverage over
+9,932 lines of the application's own code (5.96 % branch) — 10.93 % on the
+core logic, 7.61 % on the chart/UI layer. See the commit history for the
+ratchet.
 
 The solution suite is the primary gate: golden-master tests against the
 canonical C TA-Lib, the application's own indicators, the interval
