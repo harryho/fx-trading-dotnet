@@ -1,0 +1,30 @@
+# FXPA .editorconfig — pragmatic rules for a legacy WinForms codebase.
+# Formatting is intentionally NOT enforced repo-wide yet (would churn 200k
+# lines of 2008-era code); these rules apply to all files and tighten as
+# each module is touched.
+
+root = true
+
+[*]
+charset = utf-8
+end_of_line = crlf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{cs,csproj,props,targets}]
+indent_style = space
+indent_size = 4
+
+[*.{yml,yaml,json}]
+indent_style = space
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false
+
+# Legacy code keeps its existing style; analyzer severity is raised
+# incrementally per-module rather than repo-wide.
+[*.cs]
+csharp_style_namespace_declarations = block_style:silent
+dotnet_diagnostic.CS0618.severity = none   # obsolete APIs, legacy
+dotnet_diagnostic.CA1416.severity = none   # WinForms platform-specific by design

@@ -1,0 +1,17 @@
+<Project>
+
+  <!-- Repo-wide build defaults. Per-project quirks stay in the csproj files
+       (fxpa.csproj carries the legacy NoWarn list for 2008-era code). -->
+
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Deterministic>true</Deterministic>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <!-- Platform: this project is Windows-desktop by design (WinForms). -->
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+  </PropertyGroup>
+
+</Project>

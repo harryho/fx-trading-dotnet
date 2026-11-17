@@ -1,0 +1,179 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>fxpa</AssemblyName>
+    <RootNamespace>fxpa</RootNamespace>
+    <StartupObject>fxpa.Program</StartupObject>
+    <ApplicationIcon>fxpa-app.ico</ApplicationIcon>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Deterministic>false</Deterministic>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <NoWarn>$(NoWarn);CS0618;CS0168;CS0219;CS0659;SYSLIB0011;SYSLIB0012;SYSLIB0014;CA1416;WFO1000</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="..\lib\TA-Lib-Core.dll" />
+    <PackageReference Include="SharpZipLib" Version="1.4.2" />
+    <PackageReference Include="System.Management" Version="9.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fxd\**\*" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Analyzer\FxAnalyzerHostControl.cs" />
+    <Compile Include="Analyzer\FxAnalyzerHostControl.Designer.cs" />
+    <Compile Include="Analyzer\Indicator\FxpaIndicatorUI.cs" />
+    <Compile Include="Analyzer\Indicator\FxpaIndicator.cs" />
+    <Compile Include="Calculate\ARBR.cs" />
+    <Compile Include="Calculate\BOLL.cs" />
+    <Compile Include="Calculate\FxRSI.cs" />
+    <Compile Include="Calculate\CR.cs" />
+    <Compile Include="Calculate\RSI.cs" />
+    <Compile Include="Calculate\SAR.cs" />
+    <Compile Include="Calculate\CCI.cs" />
+    <Compile Include="Calculate\LWR.cs" />
+    <Compile Include="Calculate\WR.cs" />
+    <Compile Include="Chart\ChartPane1.Designer.cs" />
+    <Compile Include="Chart\Series\IndicatorChartSeries.cs" />
+    <Compile Include="Common\AppContext.cs" />
+    <Compile Include="Common\AppSetting.cs" />
+    <Compile Include="Common\CustomNameAttribute.cs" />
+    <Compile Include="Chart\CustomObjects\FibonacciRetracementObject.cs" />
+    <Compile Include="Chart\CustomObjects\LevelLinesChartObject.cs" />
+    <Compile Include="Chart\CustomObjects\LineObject.cs" />
+    <Compile Include="Chart\CustomObjects\OrdersMarkerObject.cs" />
+    <Compile Include="Chart\CustomObjects\TextObject.cs" />
+    <Compile Include="Chart\Custom\CustomObject.cs" />
+    <Compile Include="Chart\Custom\CustomObjectControl.cs" />
+    <Compile Include="Chart\Custom\CustomObjectControl.Designer.cs" />
+    <Compile Include="Chart\Custom\CustomObjectsManager.cs" />
+    <Compile Include="Chart\Custom\DynamicCustomObject.cs" />
+    <Compile Include="Chart\Series\ChartSeries.cs" />
+    <Compile Include="Chart\Series\ImagesChartSeries.cs" />
+    <Compile Include="Chart\Series\SimpleChartSeries.cs" />
+    <Compile Include="Chart\Series\TradeChartSeries.cs" />
+    <Compile Include="Chart\Series\TradeChartSeries.Designer.cs" />
+    <Compile Include="Chart\ChartControl.cs" />
+    <Compile Include="Chart\ChartControl.Designer.cs" />
+    <Compile Include="Chart\ChartGrid.cs" />
+    <Compile Include="Chart\ChartPane.cs" />
+    <Compile Include="Chart\ChartPane.Designer.cs" />
+    <Compile Include="Chart\ChartSeriesColorSelector.cs" />
+    <Compile Include="Chart\GraphicsWrapper.cs" />
+    <Compile Include="Chart\MainChartPane.cs" />
+    <Compile Include="Chart\SubChartPane.cs" />
+    <Compile Include="Chart\SubChartPane.Designer.cs" />
+    <Compile Include="Common\Collections\ListEx.cs" />
+    <Compile Include="Common\AppConst.cs" />
+    <Compile Include="Common\GeneralHelper.cs" />
+    <Compile Include="Data\BarData.cs" />
+    <Compile Include="Data\BarDataHelper.cs" />
+    <Compile Include="Data\CandleSignal.cs" />
+    <Compile Include="Data\DataCache.cs" />
+    <Compile Include="Data\DataHelper.cs" />
+    <Compile Include="Data\DataProvider.cs" />
+    <Compile Include="Data\DataService.cs" />
+    <Compile Include="Data\ProviderHelper.cs" />
+    <Compile Include="Data\Signal.cs" />
+    <Compile Include="Analyzer\AnalyzerHost\AnalyzerHost.cs" />
+    <Compile Include="Analyzer\AnalyzerHost\LocalAnalyzerHost.cs" />
+    <Compile Include="Analyzer\AnalyzerHost\RemoteAnalyzerHost.cs" />
+    <Compile Include="Analyzer\AnalyzerSession\AnalyzerSession.cs" />
+    <Compile Include="Analyzer\AnalyzerSession\IAnalyzerSessionManager.cs" />
+    <Compile Include="Analyzer\AnalyzerSession\ISessionInfoManager.cs" />
+    <Compile Include="Analyzer\AnalyzerSession\SessionInfo.cs" />
+    <Compile Include="Analyzer\Analyzer.cs" />
+    <Compile Include="Analyzer\ProfessionalAnalyzer.cs" />
+    <Compile Include="Analyzer\Indicator\Custom\PinBarCustom.cs" />
+    <Compile Include="Analyzer\Indicator\Custom\ShadowTraceCustom.cs" />
+    <Compile Include="Analyzer\Indicator\Enahnced\ATR.cs" />
+    <Compile Include="Analyzer\Indicator\Enahnced\EMA.cs" />
+    <Compile Include="Analyzer\Indicator\Enahnced\MACD.cs" />
+    <Compile Include="Analyzer\Indicator\Enahnced\MFI.cs" />
+    <Compile Include="Analyzer\Indicator\Enahnced\RVI.cs" />
+    <Compile Include="Analyzer\Indicator\Enahnced\STO.cs" />
+    <Compile Include="Analyzer\Indicator\Enahnced\TEMA.cs" />
+    <Compile Include="Analyzer\Indicator\GenericTALibIndicator.cs" />
+    <Compile Include="Analyzer\Indicator\GenericTALibIndicatorUI.cs" />
+    <Compile Include="Analyzer\Indicator\Indicator.cs" />
+    <Compile Include="Analyzer\Indicator\FxpaIndicatorManager.cs" />
+    <Compile Include="Analyzer\Indicator\IndicatorPropertiesControl.cs" />
+    <Compile Include="Analyzer\Indicator\IndicatorPropertiesControl.Designer.cs" />
+    <Compile Include="Analyzer\Indicator\IndicatorResults.cs" />
+    <Compile Include="Analyzer\Indicator\IndicatorResultSet.cs" />
+    <Compile Include="Analyzer\Indicator\BasicIndicator.cs" />
+    <Compile Include="Analyzer\Indicator\BasicIndicatorUI.cs" />
+    <Compile Include="Common\Math\MathHelper.cs" />
+    <Compile Include="Common\Math\SimpleLine.cs" />
+    <Compile Include="Emulator\BaseEngine.cs" />
+    <Compile Include="Emulator\IEngine.cs" />
+    <Compile Include="Net\DSWebClient.cs" />
+    <Compile Include="Data\ProviderService.cs" />
+    <Compile Include="Handler\LoadingHandler.cs" />
+    <Compile Include="Handler\ProviderHandler.cs" />
+    <Compile Include="Net\IMsgHandler.cs" />
+    <Compile Include="Handler\MsgHandler.cs" />
+    <Compile Include="Net\NetHelper.cs" />
+    <Compile Include="SourceProvider\FxpaSource.cs" />
+    <Compile Include="Common\TimeControl\ITimeControl.cs" />
+    <Compile Include="UI\DOATransparentLabel.cs" />
+    <Compile Include="UI\DOATransparentLabel.Designer.cs" />
+    <Compile Include="UI\HeaderRenderer.cs" />
+    <Compile Include="UI\IManagedTreeNode.cs" />
+    <Compile Include="UI\ManagedTreeView.cs" />
+    <Compile Include="UI\PenControl.cs" />
+    <Compile Include="UI\PenControl.Designer.cs" />
+    <Compile Include="UI\QuickenToolStrip.cs" />
+    <Compile Include="UI\TitleStrip.cs" />
+    <Compile Include="Util\AppUtil.cs" />
+    <Compile Include="Util\FileWorker.cs" />
+    <Compile Include="Util\IFileWorker.cs" />
+    <Compile Include="Util\LogUtil.cs" />
+    <Compile Include="Util\SysUtil.cs" />
+    <Compile Include="Util\FileUtil.cs" />
+    <Compile Include="Util\ZipUtil.cs" />
+    <Compile Include="FxpaForm.cs" />
+    <Compile Include="FxpaForm.Designer.cs" />
+    <Compile Include="Order\Order.cs" />
+    <Compile Include="Order\OrderId.cs" />
+    <Compile Include="Order\OrderInformation.cs" />
+    <Compile Include="Order\OrderTypeEnum.cs" />
+    <Compile Include="FxpaBase\IFxpaBaseCompoent.cs" />
+    <Compile Include="FxpaBase\FxpaBase.cs" />
+    <Compile Include="FxpaBase\FxpaBaseComponent.cs" />
+    <Compile Include="SourceProvider\IDataProvider.cs" />
+    <Compile Include="SourceProvider\IOrderExecutionProvider.cs" />
+    <Compile Include="SourceProvider\LocalOrderExecutionProvider.cs" />
+    <Compile Include="SourceProvider\RemoteDataProvider.cs" />
+    <Compile Include="SourceProvider\RemoteSimulationDataProvider.cs" />
+    <Compile Include="Common\Reflection\ReflectionHelper.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="Analyzer\Indicator\AnalyzerSessionIndicatorsControl.cs" />
+    <Compile Include="Analyzer\Indicator\AnalyzerSessionIndicatorsControl.Designer.cs" />
+    <Compile Include="Analyzer\AnalyzerSession\AnalyzerSessionControl.cs" />
+    <Compile Include="Analyzer\AnalyzerSession\AnalyzerSessionControl.Designer.cs" />
+    <Compile Include="Analyzer\FxAnalyzerControl.cs" />
+    <Compile Include="Analyzer\FxAnalyzerControl.Designer.cs" />
+    <Compile Include="Common\ThreadEx\ThreadPoolEx.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs" />
+    <Compile Include="Properties\Settings.Designer.cs" />
+    <Compile Include="Common\FxpaCommonControl.cs" />
+    <Compile Include="Common\FxpaCommonControl.Designer.cs" />
+    <Compile Include="UI\CustomPropertiesControl.cs" />
+    <Compile Include="UI\CustomPropertiesControl.Designer.cs" />
+    <Compile Include="UI\HostingForm.cs" />
+    <Compile Include="UI\HostingForm.Designer.cs" />
+    <Compile Include="UI\IPropertyContainer.cs" />
+    <Compile Include="LoadingForm.cs" />
+    <Compile Include="LoadingForm.designer.cs" />
+    <Compile Include="AboutForm.cs" />
+    <Compile Include="AboutForm.designer.cs" />
+  </ItemGroup>
+</Project>
