@@ -63,21 +63,22 @@ The suite is fast (~0.3 s) because coverage collection is opt-in. To
 measure code coverage:
 
 ```powershell
-dotnet test fx-trading-dotnet.sln -c Release -s coverlet.runsettings
+dotnet test fx-trading-dotnet.sln -c Release -p:CollectCoverage=true
 dotnet tool install -g dotnet-reportgenerator-globaltool   # once, for HTML
-reportgenerator -reports:"tests/fxpa.tests/TestResults/**/coverage.cobertura.xml" -targetdir:coveragereport
+reportgenerator -reports:"tests/fxpa.tests/TestResults/coverage/coverage.cobertura.xml" -targetdir:coveragereport
 ```
 
-Then open `coveragereport/index.html`. The raw Cobertura XML lands in
-`tests/fxpa.tests/TestResults/<guid>/coverage.cobertura.xml`.
+Then open `coveragereport/index.html`.
 
-`coverlet.runsettings` scopes the measurement to the application's own
-code: the WinForms designer output, the settings/resource designers and
-the vendored third-party components (QuickenToolStrip, TitleStrip,
-HeaderRenderer, DOATransparentLabel, ManagedTreeView, DSWebClient,
-ThreadPoolEx) are excluded, and each exclusion carries its reason in the
-file. The .NET framework and the NuGet packages are never instrumented by
-coverlet in the first place.
+The measurement scope lives in `tests/fxpa.tests/fxpa.tests.csproj`, next
+to the code it applies to: the WinForms designer output, the
+settings/resource designers and the vendored third-party components
+(QuickenToolStrip, TitleStrip, HeaderRenderer, DOATransparentLabel,
+ManagedTreeView, DSWebClient, ThreadPoolEx) are excluded, and each
+exclusion carries its reason there. The .NET framework and the NuGet
+packages are never instrumented by coverlet in the first place. Coverage
+is written to one deterministic file, so a stale report can never be
+merged into a new one.
 
 Recorded baseline (2026-11-17, 65 tests): **9.52 %** line coverage over
 9,932 lines of the application's own code (5.96 % branch) — 10.93 % on the
