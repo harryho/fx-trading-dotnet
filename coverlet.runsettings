@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Code coverage scope for the FXPA baseline suite.
+
+  This file is applied AUTOMATICALLY to every test run: the test project
+  points at it with the RunSettingsFilePath property, so no extra switch
+  is needed and the scope cannot be forgotten.
+
+  To measure coverage, run the tests with the collect switch and the
+  friendly name "XPlat Code Coverage" (the README has the full command
+  line).
+
+  The measurement covers the application's own code only:
+
+  * GENERATED code is excluded - the WinForms designer output, the
+    settings and resource designers, and the assembly attributes. None of
+    it is hand written logic; the tooling regenerates it and no test can
+    meaningfully cover it.
+
+  * VENDORED third-party components are excluded - code that arrived from
+    elsewhere and is not ours to cover. QuickenToolStrip, TitleStrip and
+    HeaderRenderer declare namespaces of the .NET framework and of its
+    Samples tree; DOATransparentLabel, ManagedTreeView, DSWebClient and
+    ThreadPoolEx are vendor components that kept their product names, and
+    the application only calls them.
+
+  The .NET framework itself and the NuGet packages are never instrumented
+  by coverlet in the first place, so they need no entry here. The TA-Lib
+  binary is a pre-built DLL with no source; it is not instrumented either.
+
+  Notes for whoever edits this file:
+   - the pattern lists are COMMA separated; a semicolon list is read as one
+     single pattern that never matches anything;
+   - the pattern shape needs a wildcard segment - **/*Name.cs works, while
+     a literal **/dir/Name.cs does not;
+   - SourceLink is off because it rewrites the reported file names into
+     raw.githubusercontent.com URLs, which breaks path based exclusions.
+
+  After changing the exclusions, re-measure and update the number in
+  README.md - the recorded coverage figure must describe the same set of
+  files the report contains.
+-->
+<RunSettings>
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector friendlyName="XPlat code coverage">
+        <Configuration>
+          <Format>cobertura</Format>
+          <ExcludeByFile>**/*.designer.cs,**/*.Designer.cs,**/Properties/AssemblyInfo.cs,**/Properties/Resources.Designer.cs,**/Properties/Settings.Designer.cs,**/*QuickenToolStrip.cs,**/*TitleStrip.cs,**/*HeaderRenderer.cs,**/*DOATransparentLabel.cs,**/*ManagedTreeView.cs,**/*DSWebClient.cs,**/*ThreadPoolEx.cs</ExcludeByFile>
+          <ExcludeByAttribute>Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute</ExcludeByAttribute>
+          <IncludeTestAssembly>false</IncludeTestAssembly>
+          <SingleHit>false</SingleHit>
+          <UseSourceLink>false</UseSourceLink>
+          <SkipAutoProps>true</SkipAutoProps>
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
+  </DataCollectionRunSettings>
+</RunSettings>

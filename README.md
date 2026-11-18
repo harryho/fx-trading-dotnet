@@ -59,26 +59,36 @@ dotnet publish src\fxpa\fxpa.csproj -c Release -r win-x64 --self-contained
 dotnet test fx-trading-dotnet.sln -c Release
 ```
 
-The suite is fast (~0.3 s) because coverage collection is opt-in. To
-measure code coverage:
+The suite is fast (~0.3 s). To measure code coverage, either run the
+one-shot helper, which cleans old results, collects, builds the HTML
+report and opens it:
 
 ```powershell
-dotnet test fx-trading-dotnet.sln -c Release -p:CollectCoverage=true
-dotnet tool install -g dotnet-reportgenerator-globaltool   # once, for HTML
-reportgenerator -reports:"tests/fxpa.tests/TestResults/coverage/coverage.cobertura.xml" -targetdir:coveragereport
+powershell -ExecutionPolicy Bypass -File tools\measure-coverage.ps1
 ```
 
-Then open `coveragereport/index.html`.
+or do it by hand:
 
-The measurement scope lives in `tests/fxpa.tests/fxpa.tests.csproj`, next
-to the code it applies to: the WinForms designer output, the
-settings/resource designers and the vendored third-party components
-(QuickenToolStrip, TitleStrip, HeaderRenderer, DOATransparentLabel,
-ManagedTreeView, DSWebClient, ThreadPoolEx) are excluded, and each
-exclusion carries its reason there. The .NET framework and the NuGet
-packages are never instrumented by coverlet in the first place. Coverage
-is written to one deterministic file, so a stale report can never be
-merged into a new one.
+```powershell
+dotnet test fx-trading-dotnet.sln -c Release --collect "XPlat Code Coverage"
+dotnet tool install -g dotnet-reportgenerator-globaltool   # once, for HTML
+reportgenerator "-reports:tests\fxpa.tests\TestResults\**\coverage.cobertura.xml" -targetdir:coveragereport
+```
+
+Then open `coveragereport/index.html`. WSL users: call the Windows SDK
+`dotnet.exe` directly instead of routing the command through `cmd.exe`
+(which mangles the space in `XPlat Code Coverage`), or use
+`tools/measure-coverage.sh`.
+
+The measurement scope lives in `coverlet.runsettings` at the repository
+root and the test project applies it automatically to every run, so a
+coverage measurement cannot accidentally include the wrong files: the
+WinForms designer output, the settings/resource designers and the vendored
+third-party components (QuickenToolStrip, TitleStrip, HeaderRenderer,
+DOATransparentLabel, ManagedTreeView, DSWebClient, ThreadPoolEx) are
+excluded, and each exclusion carries its reason in that file. The .NET
+framework and the NuGet packages are never instrumented by coverlet in the
+first place.
 
 Recorded baseline (2026-11-17, 65 tests): **9.52 %** line coverage over
 9,932 lines of the application's own code (5.96 % branch) — 10.93 % on the
